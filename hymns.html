@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hymns – Madam Grace Nukafo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #b8960c;
+    --gold-light: #d4af37;
+    --cream: #faf6ef;
+    --dark: #1a1614;
+    --charcoal: #2e2a26;
+    --muted: #6b6560;
+    --border: rgba(184,150,12,0.25);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:var(--cream);
+    color:var(--dark);
+    font-family:'Lato',sans-serif;
+    font-weight:300;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  #overlay {
+    position:fixed; inset:0;
+    background:rgba(20,16,12,0.45);
+    backdrop-filter:blur(2px);
+    z-index:80; opacity:0; pointer-events:none;
+    transition:opacity .35s;
+  }
+  #overlay.open { opacity:1; pointer-events:all; }
+  #drawer {
+    position:fixed; top:0; left:0; height:100%;
+    width:min(320px,85vw);
+    background:rgba(26,22,20,0.72);
+    backdrop-filter:blur(22px) saturate(1.4);
+    -webkit-backdrop-filter:blur(22px) saturate(1.4);
+    border-right:1px solid rgba(212,175,55,0.18);
+    z-index:90; transform:translateX(-100%);
+    transition:transform .38s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+    padding:2.5rem 0 2rem;
+  }
+  #drawer.open { transform:translateX(0); }
+  .drawer-logo {
+    text-align:center; padding:0 1.5rem 2rem;
+    border-bottom:1px solid var(--border); margin-bottom:1.5rem;
+  }
+  .drawer-logo .cross { font-size:2rem; color:var(--gold-light); letter-spacing:2px; }
+  .drawer-logo p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.85rem; color:rgba(255,255,255,.5); margin-top:.3rem; }
+  nav a {
+    display:block; padding:.85rem 2rem;
+    color:rgba(255,255,255,.8); text-decoration:none;
+    font-family:'Cinzel',serif; font-size:.78rem;
+    letter-spacing:.12em; text-transform:uppercase;
+    border-left:3px solid transparent; transition:all .2s;
+  }
+  nav a:hover, nav a.active { color:var(--gold-light); border-left-color:var(--gold-light); background:rgba(212,175,55,.07); }
+  .drawer-close {
+    position:absolute; top:1rem; right:1rem;
+    background:none; border:none; cursor:pointer;
+    color:rgba(255,255,255,.5); font-size:1.4rem; line-height:1;
+  }
+  .drawer-close:hover { color:var(--gold-light); }
+  header {
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,246,239,0.88); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:.9rem 1.2rem; gap:1rem;
+  }
+  .hamburger {
+    background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; gap:5px; padding:4px;
+  }
+  .hamburger span { display:block; width:24px; height:2px; background:var(--charcoal); border-radius:2px; transition:all .3s; }
+  .hamburger.open span:nth-child(1){ transform:rotate(45deg) translate(5px,5px); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
+  header h1 { font-family:'Cinzel',serif; font-size:.82rem; letter-spacing:.12em; color:var(--charcoal); text-transform:uppercase; }
+
+  .hero {
+    background:linear-gradient(160deg,#1a1614 0%,#2e2318 55%,#3d2f1a 100%);
+    color:white; padding:3.5rem 1.5rem 3rem; text-align:center; position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23b8960c' fill-opacity='.08'/%3E%3C/svg%3E") repeat;
+  }
+  .hero-cross { font-size:2.2rem; color:var(--gold-light); display:block; margin-bottom:1rem; letter-spacing:4px; }
+  .hero h2 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem; }
+  .hero h3 { font-family:'Cormorant Garamond',serif; font-size:2.1rem; font-weight:300; line-height:1.2; margin-bottom:.5rem; }
+  .hero .dates { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:rgba(255,255,255,.6); margin-bottom:1rem; }
+  .divider-gold { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--gold-light),transparent); margin:.8rem auto; }
+  .hero .sub { font-size:.78rem; letter-spacing:.15em; color:rgba(255,255,255,.45); text-transform:uppercase; }
+
+  main { padding:2rem 1.2rem 4rem; max-width:700px; margin:0 auto; }
+  .section-label {
+    font-family:'Cinzel',serif; font-size:.7rem;
+    letter-spacing:.2em; color:var(--gold); text-transform:uppercase;
+    margin-bottom:1.4rem; display:flex; align-items:center; gap:.8rem;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
+
+  /* ── Hymn cards ── */
+  .hymn-card {
+    background:white;
+    border:1px solid var(--border);
+    border-radius:6px;
+    margin-bottom:1rem;
+    box-shadow:0 2px 16px rgba(0,0,0,.04);
+    overflow:hidden;
+    transition:box-shadow .2s;
+  }
+  .hymn-card:hover { box-shadow:0 4px 28px rgba(184,150,12,.1); }
+
+  .card-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem 1.4rem;
+    cursor:pointer; user-select:none;
+    border-left:4px solid transparent;
+    transition:border-color .2s, background .2s;
+  }
+  .hymn-card.open .card-header { border-left-color:var(--gold-light); background:rgba(212,175,55,.04); }
+  .card-num {
+    font-family:'Cinzel',serif; font-size:.65rem;
+    letter-spacing:.15em; color:var(--gold);
+    margin-bottom:.2rem;
+  }
+  .card-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; font-weight:600; color:var(--dark);
+  }
+  .card-icon {
+    width:30px; height:30px; border-radius:50%;
+    background:var(--cream); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-left:1rem;
+    transition:transform .35s, background .2s;
+    font-size:.7rem; color:var(--gold);
+  }
+  .hymn-card.open .card-icon { transform:rotate(180deg); background:var(--gold); color:white; }
+
+  .card-body {
+    max-height:0; overflow:hidden;
+    transition:max-height .5s cubic-bezier(.4,0,.2,1);
+  }
+  .hymn-card.open .card-body { max-height:3000px; }
+  .card-body-inner {
+    padding:1rem 1.4rem 1.4rem;
+    border-top:1px solid var(--border);
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.05rem; line-height:1.9;
+    color:var(--charcoal);
+  }
+  .verse-label {
+    font-family:'Cinzel',serif; font-size:.6rem;
+    letter-spacing:.15em; text-transform:uppercase;
+    color:var(--gold); margin:1rem 0 .3rem;
+  }
+  .verse-label:first-child { margin-top:0; }
+  .chorus-block {
+    margin:1rem 0;
+    padding:.8rem 1rem;
+    background:var(--cream);
+    border-left:3px solid var(--gold-light);
+    border-radius:0 3px 3px 0;
+  }
+  .chorus-label {
+    font-family:'Cinzel',serif; font-size:.6rem;
+    letter-spacing:.15em; text-transform:uppercase;
+    color:var(--gold-light); margin-bottom:.3rem;
+  }
+  .hymn-lang {
+    font-family:'Cinzel',serif; font-size:.65rem;
+    letter-spacing:.12em; color:var(--muted);
+    margin-bottom:.3rem; text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div id="overlay"></div>
+<div id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <div class="drawer-logo">
+    <div class="cross">✝</div>
+    <p>In Loving Memory</p>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="order-of-service.html">Order of Service</a>
+    <a href="tribute.html">Tributes</a>
+    <a href="hymns.html" class="active">Hymns</a>
+  </nav>
+</div>
+
+<header>
+  <button class="hamburger" id="menuBtn"><span></span><span></span><span></span></button>
+  <h1>Madam Grace Nukafo</h1>
+</header>
+
+<div class="hero">
+  <span class="hero-cross">✝</span>
+  <h2>Hymns</h2>
+  <h3>Madam Grace Nukafo</h3>
+  <div class="dates">1923 – 2026</div>
+  <div class="divider-gold"></div>
+  <p class="sub">Songs of faith &amp; remembrance</p>
+</div>
+
+<main>
+  <p class="section-label">Hymns &amp; Songs</p>
+
+  <!-- 1 -->
+  <div class="hymn-card" id="h1">
+    <div class="card-header" onclick="toggleCard('h1')">
+      <div>
+        <div class="card-num">Hymn 1</div>
+        <div class="card-title">Farther Along</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="verse-label">Verse 1</div>
+        <p>Tempted and tried we're oft made to wonder<br>
+        Why it should be thus all the day long,<br>
+        While there are others living about us,<br>
+        Never molested tho in the wrong.</p>
+
+        <div class="chorus-block">
+          <div class="chorus-label">Chorus</div>
+          <p>Farther along we'll know all about it,<br>
+          Farther along we'll understand why;<br>
+          Cheer up, my brother live in the sunshine,<br>
+          We'll understand it all by and by.</p>
+        </div>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Faithful till death said our loving Master,<br>
+        A few more days to labor and wait;<br>
+        Toils of the road will then seem as nothing,<br>
+        As we sweep thru the beautiful gate.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>When death has come and taken our loved ones,<br>
+        It leaves our home so lonely and drear;<br>
+        Then do we wonder why others prosper,<br>
+        Living so wicked year after year.</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>When we see Jesus coming in glory,<br>
+        When He comes from His home in the sky;<br>
+        Then we shall meet Him in that bright mansion,<br>
+        We'll understand it all by and by.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="hymn-card" id="h2">
+    <div class="card-header" onclick="toggleCard('h2')">
+      <div>
+        <div class="card-num">Hymn 2</div>
+        <div class="card-title">Guide Me, O Thou Great Jehovah</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="verse-label">Verse 1</div>
+        <p>Guide me, O Thou great Jehovah,<br>
+        Pilgrim thru this barren land;<br>
+        I am weak, but thou art mighty<br>
+        Hold me with thy powerful hand;<br>
+        Bread of heaven, bread of heaven,<br>
+        Feed me till I want no more,<br>
+        Feed me till I want no more.</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Open now the crystal fountain,<br>
+        Whence the healing stream doth flow;<br>
+        Let the fiery and cloudy pillar<br>
+        Lead me all my journey thru;<br>
+        Strong deliverer, strong deliverer,<br>
+        Be thou still my strength and shield,<br>
+        Be thou still my strength and shield.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>When I tread the verge of Jordan,<br>
+        Bid my anxious fears subside;<br>
+        Bear me thru the swelling current,<br>
+        Land me safe on Canaan's side;<br>
+        Songs of praises, songs of praises,<br>
+        I will ever give to thee,<br>
+        I will ever give to thee.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="hymn-card" id="h3">
+    <div class="card-header" onclick="toggleCard('h3')">
+      <div>
+        <div class="card-num">Hymn 3</div>
+        <div class="card-title">It Is Well with My Soul</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="verse-label">Verse 1</div>
+        <p>When peace like a river attendeth my way,<br>
+        When sorrows like sea billows roll;<br>
+        Whatever my lot, thou hast taught me to say,<br>
+        "It is well, it is well with my soul."</p>
+
+        <div class="chorus-block">
+          <div class="chorus-label">Refrain</div>
+          <p>It is well, it is well with my soul,<br>
+          With my soul, it is well, it is well with my soul.</p>
+        </div>
+
+        <div class="verse-label">Verse 2</div>
+        <p>My sin — oh, the bliss of this glorious thought —<br>
+        My sin, not in part but the whole,<br>
+        Is nailed to the cross and I bear it no more:<br>
+        Praise the Lord, praise the Lord, O my soul!</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>And, Lord, haste the day when the faith shall be sight,<br>
+        The clouds be rolled back as a scroll,<br>
+        The trump shall resound and the Lord shall descend,<br>
+        "Even so" — it is well with my soul.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="hymn-card" id="h4">
+    <div class="card-header" onclick="toggleCard('h4')">
+      <div>
+        <div class="card-num">Hymn 4</div>
+        <div class="card-title">My Hope Is Built on Nothing Less</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="verse-label">Verse 1</div>
+        <p>My hope is built on nothing less<br>
+        Than Jesus' blood and righteousness;<br>
+        I dare not trust the sweetest frame,<br>
+        But wholly lean on Jesus' name.</p>
+
+        <div class="chorus-block">
+          <div class="chorus-label">Refrain</div>
+          <p>On Christ, the Solid Rock, I stand;<br>
+          All other ground is sinking sand,<br>
+          All other ground is sinking sand.</p>
+        </div>
+
+        <div class="verse-label">Verse 2</div>
+        <p>When darkness veils His lovely face,<br>
+        I rest on His unchanging grace;<br>
+        In every high and stormy gale,<br>
+        My anchor holds within the veil.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>His oath, His covenant, His blood,<br>
+        Support me in the whelming flood;<br>
+        When all around my soul gives way,<br>
+        He then is all my hope and stay.</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>When He shall come with trumpet sound,<br>
+        O may I then in Him be found,<br>
+        Dressed in His righteousness alone,<br>
+        Faultless to stand before the throne.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="hymn-card" id="h5">
+    <div class="card-header" onclick="toggleCard('h5')">
+      <div>
+        <div class="card-num">Hymn 5</div>
+        <div class="card-title">Blest Be the Tie That Binds</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="verse-label">Verse 1</div>
+        <p>Blest be the tie that binds<br>
+        Our hearts in Christian love;<br>
+        The fellowship of kindred minds<br>
+        Is like to that above.</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Before our Father's throne<br>
+        We pour our ardent prayers;<br>
+        Our fears, our hopes, our aims are one,<br>
+        Our comforts and our cares.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>We share our mutual woes,<br>
+        Our mutual burdens bear;<br>
+        And often for each other flows<br>
+        The sympathizing tear.</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>When we asunder part,<br>
+        It gives us inward pain;<br>
+        But we shall still be joined in heart,<br>
+        And hope to meet again.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="hymn-card" id="h6">
+    <div class="card-header" onclick="toggleCard('h6')">
+      <div>
+        <div class="card-num">Hymn 6</div>
+        <div class="card-title">Wo A Me Koma Afe Wo</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="hymn-lang">Twi Hymn</div>
+        <div class="verse-label">Verse 1</div>
+        <p>Wo a me koma afe wo<br>
+        M'Agyenkwa no wo wɔ he?<br>
+        Yesu afa me yɔnko<br>
+        Na afei deɛ w'afa he?</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Me kra ayɛ hahaaha sɛ<br>
+        Repɛ wo, me dɔfo pa<br>
+        Bɔne ama m'abrɛ sɛ<br>
+        Ɛnti bra bɛgye me nkwa.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>Me de mmɔborɔ nne me frɛ wo<br>
+        Yesu, 'he po na wo kɔ?<br>
+        Hwee remma me nya ahotɔ<br>
+        Akosi sɛ me wu?</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>Sɛ menya nnomaa ntaban a<br>
+        Anka mɛtu ma kɔ<br>
+        Ma kɔ hwehwɛ wiem ne 'soro<br>
+        Mahu deɛ Yesu wɔ.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="hymn-card" id="h7">
+    <div class="card-header" onclick="toggleCard('h7')">
+      <div>
+        <div class="card-num">Hymn 7</div>
+        <div class="card-title">Ɔman Bi Wɔhɔ Ɛhyerɛn Sen Wim</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="hymn-lang">Twi Hymn</div>
+        <div class="verse-label">Verse 1</div>
+        <p>Ɔman bi wɔhɔ ɛhyerɛn sen wim<br>
+        Yɛde gyedie hu wɔ akyiri<br>
+        Na Agya retwɛn wɔ kwan so<br>
+        Asiesie tenabea ama yɛn hɔ.</p>
+
+        <div class="chorus-block">
+          <div class="chorus-label">Nnyesoɔ</div>
+          <p>Daakye bi anigyeɛm<br>
+          Yɛbɛhyia wɔ mpoano fɛfɛ hɔ</p>
+        </div>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Yɛbɛto wɔ mpoano fɛfɛ hɔ<br>
+        Nhyirafoɔ nnwom a ɛyɛ dɛ no<br>
+        Yɛn honhom renni yea ara da<br>
+        Yɛnsi apini yɛn home mu.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>Yɛn soro Agya ɔdɛɛfoɔ no<br>
+        Yɛde yɛn ayɛyie bɛma no<br>
+        Wɔ nhyira a ɔde dom yɛn ha<br>
+        Ne ne dɔ akyɛdeɛ fɛfɛ nti.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="hymn-card" id="h8">
+    <div class="card-header" onclick="toggleCard('h8')">
+      <div>
+        <div class="card-num">Hymn 8</div>
+        <div class="card-title">Deɛ Mete Yi Menni Hwee Ka</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="hymn-lang">Twi Hymn</div>
+        <div class="verse-label">Verse 1</div>
+        <p>Deɛ mete yi menni hwee ka<br>
+        Sɛ wohwiee Womogya maa me<br>
+        Na Woka sɛ memra Wo hɔ<br>
+        Nyame Adwamma m'aba.</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Deɛ mete yi merentwɛn sɛ<br>
+        Mepere ma me kra ho fi<br>
+        Wo a womogya tumi tu fi<br>
+        Nyame Adwamma m'aba.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>Deɛ mete yi, sɛ aperepere<br>
+        Ɔko ne suro ahyɛ me ma<br>
+        Na akyinn yi him me po a<br>
+        Nyame Adwamma m'aba.</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>Deɛ mete yi me yɛ mmɔbo<br>
+        Anite, ahonya ne ayaresa<br>
+        Deɛ mehwehwe nyinaa fi wo hɔ<br>
+        Nyame Adwamma m'aba.</p>
+
+        <div class="verse-label">Verse 5</div>
+        <p>Deɛ mete yi Wobɛgye me<br>
+        De akyɛ me ate me ho<br>
+        Megye W'anosɛm medi nti<br>
+        Nyame Adwamma m'aba.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="hymn-card" id="h9">
+    <div class="card-header" onclick="toggleCard('h9')">
+      <div>
+        <div class="card-num">Hymn 9</div>
+        <div class="card-title">Wo Ne Me Ntena</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="hymn-lang">Twi Hymn</div>
+        <div class="verse-label">Verse 1</div>
+        <p>Wo ne me ntena, ade reyɛ asa<br>
+        Sum reduru, Awurade tena menkyɛn<br>
+        Aboafoɔ pa, ne awereɛkyefoɔ sa a<br>
+        O An konam Boafoɔ, Wo ne me ntena</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Yɛn nkwa nna ketewa yi retwam kɔ<br>
+        Wiase dɛ repa, n'anuonyam resen<br>
+        Ao, Wo a Wonsakyera da, Wo ne me ntena</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>Mehia Wo wɔ me nkyen berɛ nyinaa<br>
+        W'adom na ɛka sɔhwɛfoɔ no hyɛ<br>
+        Gyefoɔ, kyigyinafoɔ bɛn ɛne wo sɛ?<br>
+        Sum mu o, hann mu o, Wo ne me ntena</p>
+
+        <div class="verse-label">Verse 4</div>
+        <p>Sɛ me ne Won nam a mensuro hwee<br>
+        Ɔyea nyɛ duru, nnisuo nyɛ nnwono<br>
+        Wuo bɔre, damoa nkonim ɛwɔ he?<br>
+        Medi nkonim daa sɛ Wo ne me tena a.</p>
+
+        <div class="verse-label">Verse 5</div>
+        <p>Memua m'ani a yi W'asennua kyerɛ me<br>
+        Hyerɛn sum mu, kyerɛ me soro kwan<br>
+        Ɔsoro hyerɛn, wiase kusuu resa<br>
+        Owuo mu o, nkwa mu o, Wo ne me ntena.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="hymn-card" id="h10">
+    <div class="card-header" onclick="toggleCard('h10')">
+      <div>
+        <div class="card-num">Hymn 10</div>
+        <div class="card-title">Yesu Me Kra Ne Dɔfo</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="hymn-lang">Twi Hymn</div>
+        <div class="verse-label">Verse 1</div>
+        <p>Yesu me kra ne Dɔfo<br>
+        Ma Ma menguan mɛhyɛ wo bom;<br>
+        Nsuo no reworo yi<br>
+        Na ahum no retu yi<br>
+        Me Gyefo fa me hunta<br>
+        Ma ahum no mɔ mmɛsen<br>
+        Gya me kodu berano<br>
+        Ao, awiei no gye me kra.</p>
+
+        <div class="verse-label">Verse 2</div>
+        <p>Menni huntabea biara<br>
+        Me kra twere Wo nkutoo<br>
+        Mma nnya me nko ara da<br>
+        Sɔ me mu, kyekye me werɛ<br>
+        Me werɛ nyinna hyɛ Wo mu<br>
+        Fa wo ntaban kɛseɛ no<br>
+        Kata me tikwa yi so.</p>
+
+        <div class="verse-label">Verse 3</div>
+        <p>Adom pii wɔ Wo nsam a<br>
+        ɛkata me bɔne so<br>
+        Ma nkwa nsuo no nsen mmra<br>
+        ɛnhohoro na ɛnte me ho<br>
+        Wo ne nkwa asutie no<br>
+        Ma memmɛsa bi mennom<br>
+        Bra bɛtaa me koma mu<br>
+        Taa mu kɔ mmeresanten nyinaa</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const drawerClose = document.getElementById('drawerClose');
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); menuBtn.classList.add('open'); }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); menuBtn.classList.remove('open'); }
+  menuBtn.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  overlay.addEventListener('click', closeDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+</script>
+</body>
+</html>

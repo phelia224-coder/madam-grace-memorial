@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Order of Service – Madam Grace Nukafo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --dark: #1a1510;
+    --gold: #b8965a;
+    --gold-light: #d4b07a;
+    --taupe: #8c7b6b;
+    --warm-white: #faf7f2;
+    --section-bg: rgba(255,255,255,0.55);
+    --drawer-width: 270px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(184,150,90,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(140,123,107,0.08) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f5f0e8'/%3E%3Ccircle cx='1' cy='1' r='0.6' fill='%23d4b07a' opacity='0.15'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── OVERLAY ── */
+  #overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    transition: opacity 0.3s;
+  }
+  #overlay.active { display: block; }
+
+  /* ── DRAWER ── */
+  #drawer {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--drawer-width);
+    height: 100%;
+    background: rgba(26,21,16,0.82);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border-right: 1px solid rgba(184,150,90,0.25);
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+    padding: 70px 0 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  #drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    padding: 0 28px 30px;
+    border-bottom: 1px solid rgba(184,150,90,0.2);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .drawer-header .monogram {
+    width: 52px; height: 52px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 1.1rem;
+  }
+  .drawer-header p {
+    font-family: 'Cormorant Garamond', serif;
+    color: rgba(245,240,232,0.75);
+    font-size: 0.8rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .nav-links { list-style: none; padding: 0 20px; flex: 1; }
+  .nav-links li { margin-bottom: 4px; }
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.8);
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    background: rgba(184,150,90,0.15);
+    color: var(--gold-light);
+  }
+  .nav-links a .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+  .drawer-footer {
+    padding: 20px 28px 0;
+    border-top: 1px solid rgba(184,150,90,0.2);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: rgba(245,240,232,0.4);
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  /* ── TOPBAR ── */
+  #topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184,150,90,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 50;
+  }
+
+  #hamburger {
+    background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; gap: 5px;
+    padding: 6px;
+  }
+  #hamburger span {
+    display: block; width: 24px; height: 1.5px;
+    background: var(--dark);
+    transition: all 0.3s;
+  }
+  #hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  #hamburger.open span:nth-child(2) { opacity: 0; }
+  #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .topbar-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--taupe);
+    text-transform: uppercase;
+  }
+  .topbar-ornament { color: var(--gold); font-size: 1.1rem; }
+
+  /* ── PAGE CONTENT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    padding: 80px 0 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    text-align: center;
+    padding: 40px 24px 36px;
+  }
+  .page-header .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+  .page-header .divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin: 0 auto 18px;
+  }
+  .page-header .divider span { flex: 1; max-width: 80px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .page-header .divider .cross { color: var(--gold); font-size: 1rem; }
+  .page-header .sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--taupe);
+  }
+
+  /* ── OFFICIATING SECTION ── */
+  .section-block {
+    margin: 0 16px 28px;
+    background: var(--section-bg);
+    border: 1px solid rgba(184,150,90,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .section-label {
+    background: linear-gradient(135deg, rgba(184,150,90,0.18), rgba(184,150,90,0.06));
+    border-bottom: 1px solid rgba(184,150,90,0.2);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label .label-icon { font-size: 1.05rem; }
+  .section-label h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .section-body { padding: 18px 22px; }
+
+  .officiants-list { list-style: none; }
+  .officiants-list li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--dark);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(184,150,90,0.1);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .officiants-list li:last-child { border-bottom: none; }
+  .officiants-list li::before { content: '†'; color: var(--gold); font-size: 0.8rem; flex-shrink: 0; }
+  .officiants-list .role {
+    font-size: 0.78rem;
+    color: var(--taupe);
+    font-style: italic;
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* ── PART HEADING ── */
+  .part-heading {
+    text-align: center;
+    padding: 10px 16px 14px;
+    position: relative;
+  }
+  .part-heading h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--dark);
+    text-transform: uppercase;
+    display: inline-block;
+    background: var(--cream);
+    padding: 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .part-heading::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 16px; right: 16px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+    opacity: 0.35;
+  }
+  .part-heading .time-badge {
+    display: inline-block;
+    background: rgba(184,150,90,0.12);
+    border: 1px solid rgba(184,150,90,0.3);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 0.72rem;
+    color: var(--gold);
+    font-family: 'Lato', sans-serif;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── PROGRAM ITEMS ── */
+  .program-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(184,150,90,0.1);
+  }
+  .program-item:last-child { border-bottom: none; }
+  .prog-time {
+    padding: 14px 12px 14px 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    border-right: 1px solid rgba(184,150,90,0.15);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-right: 16px;
+    padding-top: 16px;
+    line-height: 1.4;
+  }
+  .prog-details {
+    padding: 14px 0 14px 16px;
+  }
+  .prog-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 2px;
+  }
+  .prog-sub-list { list-style: none; margin-top: 6px; }
+  .prog-sub-list li {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    color: var(--taupe);
+    padding: 2px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .prog-sub-list li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .prog-minister {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    color: var(--taupe);
+    font-style: italic;
+    margin-top: 3px;
+  }
+
+  /* ── COMMITTAL ITEMS ── */
+  .committal-item {
+    display: flex;
+    gap: 14px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(184,150,90,0.1);
+    align-items: flex-start;
+  }
+  .committal-item:last-child { border-bottom: none; }
+  .committal-key {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    min-width: 100px;
+    padding-top: 2px;
+    line-height: 1.4;
+  }
+  .committal-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--dark);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .committal-val em {
+    font-style: italic;
+    color: var(--taupe);
+    font-size: 0.9rem;
+  }
+
+  /* ── CLOSING VERSE ── */
+  .verse-block {
+    text-align: center;
+    padding: 32px 24px;
+    margin: 0 16px 40px;
+    border: 1px solid rgba(184,150,90,0.2);
+    border-radius: 10px;
+    background: rgba(184,150,90,0.04);
+  }
+  .verse-block p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--taupe);
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .verse-block cite {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 480px) {
+    .program-item { grid-template-columns: 82px 1fr; }
+    .prog-time { font-size: 0.65rem; padding-right: 10px; }
+    .section-block { margin: 0 10px 22px; }
+    .verse-block { margin: 0 10px 36px; }
+    .part-heading { padding: 10px 10px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Drawer -->
+<nav id="drawer" aria-label="Site navigation">
+  <div class="drawer-header">
+    <div class="monogram">GN</div>
+    <p>In Loving Memory of<br/><strong style="color:rgba(245,240,232,0.9);font-style:normal;">Madam Grace Nukafo</strong></p>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html"><span class="icon"></span> Home</a></li>
+    <li><a href="order-of-service.html" class="active"><span class="icon"></span> Order of Service</a></li>
+    <li><a href="tribute.html"><span class="icon"></span> Tributes</a></li>
+     <li><a href="hymns.html"><span class="icon"></span> Home</a></li>
+  </ul>
+  <div class="drawer-footer">"I am the resurrection and the life."<br/>— John 11:25</div>
+</nav>
+
+<!-- Top bar -->
+<header id="topbar">
+  <button id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="topbar-title">Order of Service</span>
+  <span class="topbar-ornament">✦</span>
+</header>
+
+<main>
+  <!-- Page Header -->
+  <div class="page-header fade-in">
+    <p class="eyebrow">Burial &amp; Committal Service</p>
+    <h1>Madam Grace<br/><em style="font-style:italic;">Nukafo</em></h1>
+    <div class="divider">
+      <span></span><span class="cross">✝</span><span></span>
+    </div>
+    <p class="sub">Program of Activities</p>
+  </div>
+
+  <!-- Officiating Ministers -->
+  <div class="section-block fade-in">
+    <div class="section-label">
+      <span class="label-icon">✝</span>
+      <h2>Officiating Ministers</h2>
+    </div>
+    <div class="section-body">
+      <ul class="officiants-list">
+        <li>
+          <div>
+            All Bishops of Nsawam Road Church of Christ
+            <span class="role">Presiding Bishops</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            Bro. Martin Atsiakoh Frando
+            <span class="role">Evangelist</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            Bro. Emmanuel Danful
+            <span class="role">Evangelist</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            Charles Asiedu Danquah
+            <span class="role">MC &amp; Songs Leader</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Part 1 Heading -->
+  <div class="part-heading fade-in">
+    <h3>Part I — Pre-Burial Service</h3>
+    <div><span class="time-badge">8:00 AM – 10:30 AM</span></div>
+  </div>
+
+  <!-- Part 1 Program -->
+  <div class="section-block fade-in">
+    <div class="section-body" style="padding:0 22px;">
+      <div class="program-item">
+        <div class="prog-time">8:00 – 8:10</div>
+        <div class="prog-details">
+          <p class="prog-title">Song &amp; Opening Prayer</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">8:10 – 8:30</div>
+        <div class="prog-details">
+          <p class="prog-title">File Past the Body &amp; Prayer</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">8:30 – 9:00</div>
+        <div class="prog-details">
+          <p class="prog-title">Songs / Biography / Tributes</p>
+          <ul class="prog-sub-list">
+            <li>Family</li>
+            <li>Children</li>
+            <li>Nsawam Road Church of Christ</li>
+          </ul>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">9:00 – 9:25</div>
+        <div class="prog-details">
+          <p class="prog-title">Sermon</p>
+          <p class="prog-minister">Bro. Martin Atsiakoh Frando (Evang.)</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">9:25 – 9:40</div>
+        <div class="prog-details">
+          <p class="prog-title">Songs &amp; Offertory</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">9:40 – 9:50</div>
+        <div class="prog-details">
+          <p class="prog-title">Prayer for the Family</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">9:50 – 10:20</div>
+        <div class="prog-details">
+          <p class="prog-title">Closing Prayer</p>
+        </div>
+      </div>
+      <div class="program-item">
+        <div class="prog-time">10:20 – 10:30</div>
+        <div class="prog-details">
+          <p class="prog-title">Announcement &amp; Conveyance of Body for Interment</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part 2 Heading -->
+  <div class="part-heading fade-in">
+    <h3>Part II — Committal Service</h3>
+  </div>
+
+  <!-- Part 2 -->
+  <div class="section-block fade-in">
+    <div class="section-body" style="padding: 14px 22px;">
+      <div class="committal-item">
+        <div class="committal-key">Opening Hymn</div>
+        <div class="committal-val"><em>Guide Me, O Thou Great Jehovah</em></div>
+      </div>
+      <div class="committal-item">
+        <div class="committal-key">Committal &amp; Burial</div>
+        <div class="committal-val">Bro. Emmanuel Danful <em>(Evang.)</em></div>
+      </div>
+      <div class="committal-item">
+        <div class="committal-key">Laying of Wreaths</div>
+        <div class="committal-val"><em>Family &amp; Friends</em></div>
+      </div>
+      <div class="committal-item">
+        <div class="committal-key">Vote of Thanks</div>
+        <div class="committal-val"><em>Family Representative</em></div>
+      </div>
+      <div class="committal-item">
+        <div class="committal-key">Closing &amp; Benediction</div>
+        <div class="committal-val"><em>Officiating Minister</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing verse -->
+  <div class="verse-block fade-in">
+    <p>"I am the resurrection and the life.<br/>The one who believes in me will live,<br/>even though they die."</p>
+    <cite>John 11:25</cite>
+  </div>
+</main>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    overlay.classList.add('active');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    overlay.classList.remove('active');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  // Intersection observer for fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

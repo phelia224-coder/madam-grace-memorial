@@ -1,80 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tributes | Madam Grace Nukafo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tributes – Madam Grace Nukafo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #b8960c;
+    --gold-light: #d4af37;
+    --cream: #faf6ef;
+    --dark: #1a1614;
+    --charcoal: #2e2a26;
+    --muted: #6b6560;
+    --border: rgba(184,150,12,0.25);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  #overlay {
+    position:fixed; inset:0;
+    background:rgba(20,16,12,0.45);
+    backdrop-filter:blur(2px);
+    z-index:80; opacity:0; pointer-events:none;
+    transition:opacity .35s;
+  }
+  #overlay.open { opacity:1; pointer-events:all; }
+  #drawer {
+    position:fixed; top:0; left:0; height:100%;
+    width:min(320px,85vw);
+    background:rgba(26,22,20,0.72);
+    backdrop-filter:blur(22px) saturate(1.4);
+    -webkit-backdrop-filter:blur(22px) saturate(1.4);
+    border-right:1px solid rgba(212,175,55,0.18);
+    z-index:90;
+    transform:translateX(-100%);
+    transition:transform .38s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+    padding:2.5rem 0 2rem;
+  }
+  #drawer.open { transform:translateX(0); }
+  .drawer-logo {
+    text-align:center;
+    padding:0 1.5rem 2rem;
+    border-bottom:1px solid var(--border);
+    margin-bottom:1.5rem;
+  }
+  .drawer-logo .cross { font-size:2rem; color:var(--gold-light); letter-spacing:2px; }
+  .drawer-logo p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.85rem; color:rgba(255,255,255,.5); margin-top:.3rem; }
+  nav a {
+    display:block; padding:.85rem 2rem;
+    color:rgba(255,255,255,.8); text-decoration:none;
+    font-family:'Cinzel',serif; font-size:.78rem;
+    letter-spacing:.12em; text-transform:uppercase;
+    border-left:3px solid transparent;
+    transition:all .2s;
+  }
+  nav a:hover, nav a.active {
+    color:var(--gold-light); border-left-color:var(--gold-light);
+    background:rgba(212,175,55,.07);
+  }
+  .drawer-close {
+    position:absolute; top:1rem; right:1rem;
+    background:none; border:none; cursor:pointer;
+    color:rgba(255,255,255,.5); font-size:1.4rem; line-height:1;
+  }
+  .drawer-close:hover { color:var(--gold-light); }
+  header {
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,246,239,0.88);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center;
+    padding:.9rem 1.2rem; gap:1rem;
+  }
+  .hamburger {
+    background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; gap:5px; padding:4px;
+  }
+  .hamburger span {
+    display:block; width:24px; height:2px;
+    background:var(--charcoal); border-radius:2px;
+    transition:all .3s;
+  }
+  .hamburger.open span:nth-child(1){ transform:rotate(45deg) translate(5px,5px); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
+  header h1 {
+    font-family:'Cinzel',serif; font-size:.82rem;
+    letter-spacing:.12em; color:var(--charcoal); text-transform:uppercase;
+  }
+  .hero {
+    background:linear-gradient(160deg,#1a1614 0%,#2e2318 55%,#3d2f1a 100%);
+    color:white; padding:3.5rem 1.5rem 3rem;
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23b8960c' fill-opacity='.08'/%3E%3C/svg%3E") repeat;
+  }
+  .hero-cross { font-size:2.2rem; color:var(--gold-light); display:block; margin-bottom:1rem; letter-spacing:4px; }
+  .hero h2 { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem; }
+  .hero h3 { font-family:'Cormorant Garamond',serif; font-size:2.1rem; font-weight:300; line-height:1.2; margin-bottom:.5rem; }
+  .hero .dates { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:rgba(255,255,255,.6); margin-bottom:1rem; }
+  .divider-gold { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--gold-light),transparent); margin:.8rem auto; }
+  .hero .sub { font-size:.78rem; letter-spacing:.15em; color:rgba(255,255,255,.45); text-transform:uppercase; }
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  main { padding:2rem 1.2rem 4rem; max-width:700px; margin:0 auto; }
+  .section-label {
+    font-family:'Cinzel',serif; font-size:.7rem;
+    letter-spacing:.2em; color:var(--gold); text-transform:uppercase;
+    margin-bottom:1.4rem; display:flex; align-items:center; gap:.8rem;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
 
-    <link rel="stylesheet" href="tribute.css">
+  /* ── Tribute cards ── */
+  .tribute-card {
+    background:white;
+    border:1px solid var(--border);
+    border-radius:6px;
+    margin-bottom:1.2rem;
+    box-shadow:0 2px 20px rgba(0,0,0,.04);
+    overflow:hidden;
+    transition:box-shadow .2s;
+  }
+  .tribute-card:hover { box-shadow:0 4px 30px rgba(184,150,12,.12); }
+
+  .card-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.3rem 1.5rem;
+    cursor:pointer;
+    user-select:none;
+    border-left:4px solid transparent;
+    transition:border-color .2s, background .2s;
+  }
+  .tribute-card.open .card-header {
+    border-left-color:var(--gold-light);
+    background:rgba(212,175,55,.04);
+  }
+  .card-header-left { flex:1; min-width:0; }
+  .card-tag {
+    font-family:'Cinzel',serif; font-size:.65rem;
+    letter-spacing:.18em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:.3rem;
+  }
+  .card-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; font-weight:600;
+    color:var(--dark); line-height:1.2;
+  }
+  .card-icon {
+    width:32px; height:32px; border-radius:50%;
+    background:var(--cream); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-left:1rem;
+    transition:transform .35s, background .2s;
+    font-size:.75rem; color:var(--gold);
+  }
+  .tribute-card.open .card-icon { transform:rotate(180deg); background:var(--gold); color:white; }
+
+  .card-body {
+    max-height:0; overflow:hidden;
+    transition:max-height .5s cubic-bezier(.4,0,.2,1);
+  }
+  .tribute-card.open .card-body { max-height:2000px; }
+  .card-body-inner {
+    padding:0 1.5rem 1.5rem;
+    border-top:1px solid var(--border);
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.05rem; line-height:1.9;
+    color:var(--charcoal);
+    white-space:pre-line;
+  }
+  .card-body-inner blockquote {
+    border-left:3px solid var(--gold-light);
+    padding:.5rem 1rem; margin:1rem 0;
+    font-style:italic; color:var(--muted);
+    font-size:1rem;
+  }
+  .scripture {
+    margin-top:1.2rem;
+    padding:.8rem 1rem;
+    background:var(--cream);
+    border-radius:3px;
+    border-left:3px solid var(--gold-light);
+    font-style:italic; font-size:.95rem; color:var(--muted);
+  }
+</style>
 </head>
 <body>
 
+<div id="overlay"></div>
+<div id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <div class="drawer-logo">
+    <div class="cross">✝</div>
+    <p>In Loving Memory</p>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="order-of-service.html">Order of Service</a>
+    <a href="tribute.html" class="active">Tributes</a>
+    <a href="hymns.html">Hymns</a>
+  </nav>
+</div>
+
 <header>
-
-    <button class="hamburger" id="hamburger">
-        ☰
-    </button>
-
-    <nav class="mobile-nav" id="mobileNav">
-
-        <button class="close-btn" id="closeBtn">
-            ✕
-        </button>
-
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="service.html">Order of Service</a></li>
-            <li><a href="tribute.html" class="active-link">Tributes</a></li>
-            <li><a href="hymes.html">Hymns</a></li>
-        </ul>
-
-    </nav>
-
-    <div class="overlay" id="overlay"></div>
-
+  <button class="hamburger" id="menuBtn"><span></span><span></span><span></span></button>
+  <h1>Madam Grace Nukafo</h1>
 </header>
 
-<main class="container">
+<div class="hero">
+  <span class="hero-cross">✝</span>
+  <h2>Tributes</h2>
+  <h3>Madam Grace Nukafo</h3>
+  <div class="dates">1923 – 2026</div>
+  <div class="divider-gold"></div>
+  <p class="sub">Words of love &amp; remembrance</p>
+</div>
 
-    <h1 class="page-title">Tributes</h1>
+<main>
+  <p class="section-label">In Loving Memory</p>
 
-    <!-- CHURCH TRIBUTE -->
-
-<!-- HERO IMAGE -->
-
-<section class="tribute-hero">
-
-    <img
-        src="grace123.jpg.png"
-        alt="Madam Grace Nukafo">
-
-</section>
-
-
-    <div class="tribute-card">
-
-        <div class="tribute-header">
-            Tribute by Nsawam Road Church of Christ
-            <span>+</span>
-        </div>
-
-        <div class="tribute-content">
-            <p>
+  <!-- Card 1: Church -->
+  <div class="tribute-card" id="card1">
+    <div class="card-header" onclick="toggleCard('card1')">
+      <div class="card-header-left">
+        <div class="card-tag">Tribute by</div>
+        <div class="card-name">Nsawam Road Church of Christ</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
 IN LOVING MEMORY OF MADAM GRACE NUKAFU
 
-It is with deep sorrow, yet with grateful hearts, that the brethren of the Nsawam Road Church of Christ pay tribute to our beloved sister, Madam Grace Nukafu, affectionately called “Old Lady,” whose faithful Christian life has left an enduring legacy among us.
+It is with deep sorrow, yet with grateful hearts, that the brethren of the Nsawam Road Church of Christ pay tribute to our beloved sister, Madam Grace Nukafu, affectionately called "Old Lady," whose faithful Christian life has left an enduring legacy among us.
 
-Madam Grace was baptized into the Lord’s church on 12th January 1992 and became a devoted member of the Kokomlemle Zone due to her residence at Kokomlemle. From the late 1990s, she stood as a strong pillar within the zone, demonstrating unwavering commitment to the fellowship of the saints.
+Madam Grace was baptized into the Lord's church on 12th January 1992 and became a devoted member of the Kokomlemle Zone due to her residence at Kokomlemle. From the late 1990s, she stood as a strong pillar within the zone, demonstrating unwavering commitment to the fellowship of the saints.
 
-At a time when many found it difficult to return for the 6:00 PM zonal meetings after Sunday worship, Madam Grace remained constant, punctual, and dependable. Her dedication to the work of the church was exceptional and inspiring to all who knew her. She never hesitated to support the activities of the zone financially, always contributing cheerfully her “widow’s mite” whenever the need arose.
+At a time when many found it difficult to return for the 6:00 PM zonal meetings after Sunday worship, Madam Grace remained constant, punctual, and dependable. Her dedication to the work of the church was exceptional and inspiring to all who knew her. She never hesitated to support the activities of the zone financially, always contributing cheerfully her "widow's mite" whenever the need arose.
 
-Madam Grace was also a fervent woman of prayer. During prayer sessions, she continually lifted her family before God, especially holding firmly to the hope and prayer that the Lord would one day safely return her son who had lived for many years in South Africa. Her faith in God’s power and mercy never wavered.
+Madam Grace was also a fervent woman of prayer. During prayer sessions, she continually lifted her family before God, especially holding firmly to the hope and prayer that the Lord would one day safely return her son who had lived for many years in South Africa. Her faith in God's power and mercy never wavered.
 
 She remained active and devoted in the Kokomlemle Zone until late 2009, when advancing age and physical weakness made it unsafe for her to cross the busy roads between her home and the church premises. Out of concern for her safety, she was advised to remain at home, while the zone committed itself to visiting and caring for her spiritually.
 
-For the past sixteen years, Madam Grace faithfully remained a dedicated shut-in member of the church, receiving the Lord’s Supper every Sunday in her home. Even in her advanced years, her love for God’s Word never diminished. Any brother assigned to serve communion to her knew they had to come prepared to share the sermon for the day. If one attempted to leave without recounting the message, she would quickly ask in Twi, “Na ɛdeɛn na ɔsɔfoɔ kaaɛ?” meaning, “What did the preacher say?” Such was her hunger for the Word of God.
+For the past sixteen years, Madam Grace faithfully remained a dedicated shut-in member of the church, receiving the Lord's Supper every Sunday in her home. Even in her advanced years, her love for God's Word never diminished. Any brother assigned to serve communion to her knew they had to come prepared to share the sermon for the day. If one attempted to leave without recounting the message, she would quickly ask in Twi, <em>"Na ɛdeɛn na ɔsɔfoɔ kaaɛ?"</em> — meaning, "What did the preacher say?" Such was her hunger for the Word of God.
 
 Indeed, we have lost a beautiful and faithful soul whose Christian example will continue to inspire generations. Though our hearts are heavy with grief, we take comfort in knowing that Madam Grace lived a life devoted to God and His church.
 
@@ -82,114 +259,95 @@ Old Lady, your faithfulness, prayers, kindness, and steadfastness will forever r
 
 May you rest peacefully in the bosom of your Maker until that glorious resurrection morning.
 
-“Blessed are the dead who die in the Lord… they will rest from their labor, for their deeds will follow them.” — Revelation 14:13
+<div class="scripture">"Blessed are the dead who die in the Lord… they will rest from their labor, for their deeds will follow them." — Revelation 14:13</div>
 
 Farewell, dear sister.
-
 Farewell, faithful servant of God.
-            </p>
-        </div>
-
+      </div>
     </div>
+  </div>
 
-    <!-- CHILDREN TRIBUTE -->
-
-    <div class="tribute-card">
-
-        <div class="tribute-header">
-            Tribute by Children
-            <span>+</span>
-        </div>
-
-        <div class="tribute-content">
-            <p>
-TRIBUTE BY CHILDREN
-
+  <!-- Card 2: Children -->
+  <div class="tribute-card" id="card2">
+    <div class="card-header" onclick="toggleCard('card2')">
+      <div class="card-header-left">
+        <div class="card-tag">Tribute by</div>
+        <div class="card-name">Her Children</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
 1923 – 2026
 
 Mother,
 
-You taught us that love is served on a plate. Every person who crossed our doorstep was met with your voice asking, “Have you eaten?” and you did not rest until there was food in their hands. You fed strangers like family, and you fed your grandchildren until we couldn’t eat another bite.
+You taught us that love is served on a plate. Every person who crossed our doorstep was met with your voice asking, "Have you eaten?" — and you did not rest until there was food in their hands. You fed strangers like family, and you fed your grandchildren until we couldn't eat another bite.
 
-You lived sacrificially. You gave of yourself daily. Your comfort came last, your children came first. Your kitchen was your altar, your cooking was your prayer, and your care carried our whole family. You were not just our mother. You were “Mother” to everyone.
+You lived sacrificially. You gave of yourself daily. Your comfort came last, your children came first. Your kitchen was your altar, your cooking was your prayer, and your care carried our whole family. You were not just our mother. You were "Mother" to everyone.
 
-We watched you pour yourself out without counting the cost. You spent your strength, your time, and your life making sure none of us went hungry, none of us felt unseen. Because of you, our home was always full – full of food, full of laughter, full of love.
+We watched you pour yourself out without counting the cost. You spent your strength, your time, and your life making sure none of us went hungry, none of us felt unseen. Because of you, our home was always full — full of food, full of laughter, full of love.
 
-We mourn you deeply, but we thank God for the gift of you. We promise to live the way you taught us, to give, to serve and to ask, “Have you eaten?” to the next person who needs care. Your work here is done, and your children will carry it forward.
+We mourn you deeply, but we thank God for the gift of you. We promise to live the way you taught us — to give, to serve, and to ask, "Have you eaten?" to the next person who needs care.
+
+Your work here is done, and your children will carry it forward.
 
 Sleep well, Mother.
-            </p>
-        </div>
-
+      </div>
     </div>
+  </div>
 
-    <!-- GRANDCHILDREN TRIBUTE -->
+  <!-- Card 3: Grandchildren -->
+  <div class="tribute-card" id="card3">
+    <div class="card-header" onclick="toggleCard('card3')">
+      <div class="card-header-left">
+        <div class="card-tag">Tribute by</div>
+        <div class="card-name">Grandchildren &amp; Great-Grandchildren</div>
+      </div>
+      <div class="card-icon">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+A Tribute to Our Beloved Dadaa
 
-    <div class="tribute-card">
+Dadaa, our hearts are heavy with tears, but we are grateful for the life and love you gave us. You were more than our grandmother. You were our Mama Nana, our Dadaa, our safe place — the one whose lap we ran to when life felt heavy, whose Ewe folktales under the moonlight taught us who we are and where we come from.
 
-        <div class="tribute-header">
-            Tribute by Grandchildren & Great-Grandchildren
-            <span>+</span>
-        </div>
+You taught us to say <em>"Mèlõ na wò"</em> — I love you — not just with words, but with every meal you cooked, every prayer you whispered for us at dawn.
 
-        <div class="tribute-content">
-            <p>
-A TRIBUTE TO OUR BELOVED DADA
-
-Dada,
-
-Our hearts are heavy with tears, but we are grateful for the life and love you gave us.
-
-You were more than our grandmother. You were our Mama Nana, our Dada, our safe place. The one whose lap we ran to when life felt heavy, whose Ewe folktales under the moonlight taught us who we are and where we come from.
-
-You taught us to say “Mèlõ na wò” — I love you — not just with words, but with every meal you cooked, every prayer you whispered for us at dawn.
-
-We remember wrapped in your care, how you sang old Ewe dirges and gospel songs while you went about your day and how your voice and presence always made the compound feel alive.
-
-You corrected us when we went wrong, but it was always because, “if you were not important to me, I wouldn’t bother guiding you.”
+We remember wrapped in your care, how you sang old Ewe dirges and gospel songs while you went about your day, and how your voice and presence always made the compound feel alive. You corrected us when we went wrong, but it was always because "you say" — if you were not important to me, I wouldn't bother guiding you.
 
 Your hands were rough from work, but they never grew tired of blessing us.
 
-Now the house is quiet. No more hearing you call “Mi va du nu!” — Come and eat! No more hearing your laughter and trying to call us by our English names.
+Now the house is quiet. No more hearing you call <em>"Mi va du nu!"</em> — Come and eat! No more hearing your laughter as you tried to call us by our English names.
 
-But Dada, we know the one who dies is not truly gone. You live in us. In the respect we show, the hard work we do, the faith we keep, and the love we have for each other.
+But Dadaa, we know: the one who dies is not truly gone. You live in us — in the respect we show, the hard work we do, the faith we keep, and the love we have for each other.
 
 We promise to keep your name alive. To care for one another as you cared for us.
 
-So we say...
-
-Sleep well, our sweet grandmother.
-
-May you rest in the arms of Mawu, the Almighty.
-
-We miss you more than words can say, but we thank God for giving you to us.
+So we say… Sleep well, our sweet grandmother. May you rest in the arms of Mawu, the Almighty. We miss you more than words can say, but we thank God for giving you to us.
 
 Forever your grandchildren and great-grandchildren.
-            </p>
-        </div>
-
+      </div>
     </div>
+  </div>
 
 </main>
 
-<section class="closing-message">
+<script>
+  function toggleCard(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
 
-    <p>
-        Forever in our hearts,<br>
-        always in our memories.
-    </p>
-
-    <h3>
-        Madam Grace Nukafo
-    </h3>
-
-    <span>
-        1923 – 2026
-    </span>
-
-</section>
-
-<script src="tribute.js"></script>
-
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const drawerClose = document.getElementById('drawerClose');
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); menuBtn.classList.add('open'); }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); menuBtn.classList.remove('open'); }
+  menuBtn.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  overlay.addEventListener('click', closeDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+</script>
 </body>
 </html>
