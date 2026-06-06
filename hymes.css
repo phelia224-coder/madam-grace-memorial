@@ -1,0 +1,159 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Times New Roman', serif;
+    background:#f3f3e7;
+    color:#f3f3e7;
+    
+}
+
+/* Navigation */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    padding:20px;
+    z-index:1000;
+}
+
+.hamburger{
+    background:none;
+    border:none;
+    font-size:2rem;
+    cursor:pointer;
+    color:#430119;
+}
+
+.mobile-nav{
+    position:fixed;
+    top:0;
+    right:-300px;
+
+    border-radius: 20px 0 0 20px;
+    width:280px;
+    height:100vh;
+
+    padding:30px;
+
+    /* Frosted Glass Effect */
+    background: rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border-left: 1px solid rgba(255,255,255,0.25);
+
+    box-shadow:
+        -10px 0 30px rgba(0,0,0,0.15);
+
+    transition:right .3s ease;
+
+    z-index:2000;
+}
+
+.mobile-nav.active{
+    right:0;
+}
+
+.close-btn{
+    background:none;
+    border:none;
+    font-size:1.8rem;
+    cursor:pointer;
+    float:right;
+}
+
+.mobile-nav ul{
+    list-style:none;
+    margin-top:70px;
+}
+
+.mobile-nav li{
+    margin-bottom:25px;
+}
+
+.mobile-nav a{
+    text-decoration:none;
+    color:#430119;
+    font-weight:600;
+}
+
+.active-link{
+    color:#f3f3e7 !important;
+    background-color: #430119;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:1500;
+}
+
+.overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+/* Page */
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:120px 20px 80px;
+}
+
+.page-title{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif;
+    font-size:3rem;
+    color:#430119;
+    margin-bottom:40px;
+}
+
+/* Hymn Cards */
+
+.hymn-card{
+    background:#430119;
+    border-radius:18px;
+    margin-bottom:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.hymn-header{
+    padding:22px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:600;
+}
+
+.hymn-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s ease;
+    padding:0 22px;
+}
+
+.hymn-card.active .hymn-content{
+    max-height:3000px;
+    padding:0 22px 22px;
+}
+
+.hymn-content p{
+    line-height:1.9;
+    white-space:pre-line;
+}
